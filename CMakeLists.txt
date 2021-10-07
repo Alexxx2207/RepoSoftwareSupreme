@@ -1,1 +1,1 @@
-add_executable(test test.cpp test2.cpp) 
+add_executable(Fibonacci Fibonacci.cpp) 

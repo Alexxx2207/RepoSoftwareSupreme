@@ -1,42 +1,34 @@
 #include <stdio.h>
+#include <iostream>
 #include <stdlib.h>
-
+using namespace std;
 int main()
 {
-   int num;
-   int NumbersInFile;
-   int sum=0;
+
+   
    FILE *file;
   
-   file = fopen("newprogram.txt","w");
-
+   file = fopen("newprogram.txt","r");
+        int First=0;
+        int sum=0;
   
     if(file == NULL)
          {
             printf("Error!");
             exit(1);
          }
-    do{
-
-        printf("Enter num higher than 0: ");
-        scanf("%d",&num);
-
-    }while (num<=0);
-
-        fprintf(file,"%d\n",num);
-        printf("Now lets fill the file with numbers\n");
-     
-    for (int i = 0; i < num; i++)
-     {
+         fscanf(file,"%d",&First);
+         int *array = new int[First];
+         for (int i = 0; i < First; i++)
+         {
+             fscanf(file,"%d",&array[i]);
+             sum+=array[i];
+               
+         }
+         cout<<sum;
          
-        scanf("%d",&NumbersInFile);
-        sum+=NumbersInFile;
-        fprintf(file,"%d\n",NumbersInFile);
-     
-     }
-    fprintf(file,"%d\n",sum);
-
+        
    fclose(file);
-
+   delete[]array;
    return 0;
 }

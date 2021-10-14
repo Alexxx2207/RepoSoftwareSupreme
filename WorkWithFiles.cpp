@@ -11,6 +11,9 @@ int main()
    file = fopen("newprogram.txt","r");
         int First=0;
         int sum=0;
+        int SumPerLine=0;
+        int firstn;
+        int secondn;
   
     if(file == NULL)
          {
@@ -19,13 +22,20 @@ int main()
          }
          fscanf(file,"%d",&First);
          int *array = new int[First];
+         
          for (int i = 0; i < First; i++)
          {
-             fscanf(file,"%d",&array[i]);
-             sum+=array[i];
+            
+             fscanf(file,"%d %d",&firstn,&secondn);
+             sum=firstn+secondn;
+             SumPerLine+=sum;
+
+           
+             cout<<"The sum for line: "<<"["<<i+1<<"] is "<<SumPerLine<<endl;
+             SumPerLine=0;
                
          }
-         cout<<sum;
+         
          
         
    fclose(file);

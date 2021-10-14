@@ -10,10 +10,10 @@ int main()
   
    file = fopen("newprogram.txt","r");
         int First=0;
-        int sum=0;
-        int SumPerLine=0;
         int firstn;
-        int secondn;
+        int sum;
+        int Avg;
+        int num;
   
     if(file == NULL)
          {
@@ -26,13 +26,16 @@ int main()
          for (int i = 0; i < First; i++)
          {
             
-             fscanf(file,"%d %d",&firstn,&secondn);
-             sum=firstn+secondn;
-             SumPerLine+=sum;
+             fscanf(file,"%d",&firstn);
+             for(int i=0;i<firstn;i++)
+             {
+               fscanf(file,"%d",&num);
+               sum+=num;
 
-           
-             cout<<"The sum for line: "<<"["<<i+1<<"] is "<<SumPerLine<<endl;
-             SumPerLine=0;
+             }
+             Avg=sum/firstn;
+             sum=0;
+               cout<<"Average of line "<<"["<<i+1<<"] is : "<<Avg<<endl;
                
          }
          

@@ -3,45 +3,55 @@
 #include <stdlib.h>
 using namespace std;
 int main()
-{
-
-   
+{   
    FILE *file;
-  
-   file = fopen("newprogram.txt","r");
-        int First=0;
-        int firstn;
-        float sum;
-        float Avg;
-        float num;
-  
-    if(file == NULL)
-         {
-            printf("Error!");
-            exit(1);
-         }
-         fscanf(file,"%d",&First);
-         int *array = new int[First];
-         
-         for (int i = 0; i < First; i++)
-         {
-            
-             fscanf(file,"%d",&firstn);
-             for(int i=0;i<firstn;i++)
-             {
-               fscanf(file,"%f",&num);
-               sum+=num;
 
-             }
-             Avg=sum/firstn;
-             sum=0;
-               cout<<"Average of line "<<"["<<i+1<<"] is : "<<("%.2f",Avg)<<endl;
-               
-         }
-         
-         
+	file = fopen("newprogram.txt","r");
+	int FirstNum;
+	int sum=0;
+	if (file == NULL)
+	{
+		printf ("Error!");
+		exit (1);
+	}
+
+	char array[256];
+	fscanf (file,"%d\n",&FirstNum);
+	
+	for (int i=0;i<FirstNum;i++)
+	{
+		fgets (array, 256, file);
+		
+			for (int j = 0; j < 256; j++)
+			{
+				
+				
+					const char ch = array[j];
+					int FirstInLine;
+
+					sscanf(array,"%d",&FirstInLine);
+
+                    
+						if (ch == '\0')
+						{
+							printf("\n");
+							break;
+						}
+						else if (ch != ' ' && ch != '\n')
+						{
+							int num = 0;
+							sscanf(&array[j], "%d", &num);
+							//printf("%d %d ", num, j);
+							sum += num;
+						}
+					
+			}
+			printf("%d", sum);
+			sum = 0;
+		       
+	}
+	        
         
    fclose(file);
-   delete[]array;
    return 0;
 }

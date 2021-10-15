@@ -11,9 +11,9 @@ int main()
    file = fopen("newprogram.txt","r");
         int First=0;
         int firstn;
-        int sum;
-        int Avg;
-        int num;
+        float sum;
+        float Avg;
+        float num;
   
     if(file == NULL)
          {
@@ -29,13 +29,13 @@ int main()
              fscanf(file,"%d",&firstn);
              for(int i=0;i<firstn;i++)
              {
-               fscanf(file,"%d",&num);
+               fscanf(file,"%f",&num);
                sum+=num;
 
              }
              Avg=sum/firstn;
              sum=0;
-               cout<<"Average of line "<<"["<<i+1<<"] is : "<<Avg<<endl;
+               cout<<"Average of line "<<"["<<i+1<<"] is : "<<("%.2f",Avg)<<endl;
                
          }
          

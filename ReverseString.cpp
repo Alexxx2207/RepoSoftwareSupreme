@@ -11,10 +11,7 @@ int getstrlen(char*str)
     }
     return n;
 }
-
-int main ()
-{
- 
+int main(){
     FILE* file = fopen("reverse.txt", "r");
     if (file == NULL)
 	{

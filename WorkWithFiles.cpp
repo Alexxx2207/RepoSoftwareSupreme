@@ -2,6 +2,28 @@
 #include <iostream>
 #include <stdlib.h>
 using namespace std;
+int CustomGetLine(FILE* file ,char* array,int size)
+{
+	int n;
+	for(int i=0; i < size; i++)
+	{
+		char ch;
+		ch=fgetc(file);
+		if(ch == '\n')
+		{
+			printf("\n");
+			break;
+		}else if(ch == '\0')
+		{
+			printf("%s", "End of file");
+			return 0;
+		}else
+		{
+				array[i]=ch;
+		}
+		
+	}
+}
 int main()
 {   
    FILE *file;
@@ -15,12 +37,12 @@ int main()
 		exit (1);
 	}
 
-	char array[256];	
+	char array[256];
 	do{
 		int avg=0;
 		int sum=0;
 		int FirstInLine=0;
-		fgets (array, 256, file);
+		CustomGetLine(file,array,256);
 		sscanf(array,"%d\n",&FirstInLine);
 		int check=0;
 		
@@ -44,7 +66,6 @@ int main()
 				{
 					int num = 0;
 					sscanf(&array[j], "%d", &num);
-					//printf("%d %d ", num, j);
 					sum += num;
 					check++;
 				}

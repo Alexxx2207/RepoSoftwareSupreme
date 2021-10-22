@@ -2,9 +2,9 @@
 #include <iostream>
 #include <stdlib.h>
 using namespace std;
-int CustomGetLine(FILE* file ,char* array,int size)
+void CustomGetLine(FILE* file ,char* array,int size)
 {
-	int n;
+	
 	for(int i=0; i < size; i++)
 	{
 		char ch;
@@ -16,7 +16,7 @@ int CustomGetLine(FILE* file ,char* array,int size)
 		}else if(ch == '\0')
 		{
 			printf("%s", "End of file");
-			return 0;
+			break;
 		}else
 		{
 				array[i]=ch;

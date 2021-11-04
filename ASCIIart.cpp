@@ -8,18 +8,27 @@ int main()
 
 	for(int i = 0; i < redove; i++)
 	{
-	for(int spacing = 0; spacing <= redove-i; spacing++ )
-		printf(" ");
-		for(int j = 0; j <= i; j++)
+		for(int spacing = 0; spacing <= redove-i; spacing++ )
 		{
-			printf("#");
+			printf(" ");
 		}
-		printf(" ");
-		for(int j = 0; j <= i; j++)
-		{
-			printf("#");
-		}
-		printf("\n");
+			printf("/");
+			for(int SpaceInside = 1; SpaceInside <= i*2; SpaceInside++)
+			{
+				if(i + 1 == redove)
+				{
+					printf("_");
+				}else
+				{
+					printf(" ");
+				}
+			}
+			printf("\\");
+//			for(int spacing = 0; spacing <= redove-i; spacing++ )
+//		{
+//			printf("#");
+//		}
+			printf("\n");
 	}
 	
 	return 0;

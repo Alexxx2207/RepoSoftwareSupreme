@@ -1,46 +1,43 @@
 #include <iostream>
 #include <stdio.h>
 
-void SetupGround(char player, char PrintArray[256][256],int n,int m)
+int CustomGetLine(FILE* file ,char Array[256][256])
 {
-	for(int i = 0; i < n; i++)
+	char temp[256];
+	for (int i=0; i< 10; i++)
 	{
-		for(int j = 0;j < m;j++)
-		{
-			if(i == 0 || i == (n-1))
-			{
-				PrintArray[i][j] = '#';
-			}else if(j == 0 || j == (m-1))
-			{
-				PrintArray[i][j] = '#';
-			}else
-			{
-				PrintArray[i][j] = ' ';
-			}
+		fgets(temp, 256, file);
+		for (int j=0;temp[j] != '\0'; j++){
+				if(temp[j] == '\n') {
+					temp[j] = '\0';
+				}
+				Array[i][j]=temp[j];
 		}
 	}
+}
+void PrintMap(char Array[256][256])
+{
+		for(int j = 0;j < 10;j++)
+		{
+			printf("%s\n\r", &Array[j]);
+		}
+}
+int main(){
+
+	FILE * file;
+	file = fopen("MazeGame.txt","r");
 	
-}
-void PrintMap(char a[256][256], int n, int m)
-{
-	for(int i = 0; i < n; i++)
+	if (file == NULL)
 	{
-		for(int j = 0;j < m;j++)
-		{
-			printf("%c", a[i][j]);
-		}
-		printf("\n\r");
+		printf ("Error!");
+		exit (1);
 	}
-}
-int main()
-{
 	char Array[256][256];
-	int n,m;
-	scanf("%d %d", &n, &m);
-	char player = '@';
-	int y = n/2;
-	int x = m/2;
+	const char player = '@';
+	int y = 1;
+	int x = 1;
 	char movechar;
+	CustomGetLine(file,Array);
 	do{
 		system ("/bin/stty raw");
 		movechar = getchar();
@@ -48,37 +45,37 @@ int main()
 		{
 		case 'w':
 		case 'W':
-			if(y > 1)
+			if(Array[y-1][x] != '#')
 			{
 				y--;
 			}
 			break;
 		case 'S':
 		case 's':
-			if(y < (n-2))
+			if(Array[y+1][x] != '#')
 			{
 				y++;
 			}
 			break;
 		case 'A':
 		case 'a':
-			if ( x > 1)
+			if(Array[y][x-1] != '#')
 			{
 				x--;
 			}
 			break;
 		case 'D':
 		case 'd':
-			if(x < (m-2))
+			if(Array[y][x+1] != '#')
 			{
 				x++;
 			}
 			break;
 		}
 		system("clear");
-		SetupGround(player, Array, n, m);
 		Array[y][x] = player;
-		PrintMap(Array, n, m);
+		PrintMap(Array);
+		Array[y][x] = ' ';
 		
 	}while( movechar != 'q' && movechar != 'Q');
 	system ("/bin/stty cooked");

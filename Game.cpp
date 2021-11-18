@@ -1,6 +1,6 @@
 #include <iostream>
 #include <stdio.h>
-int CustomGetLine(FILE* file ,char Array[256][256])
+int CustomGetLine(FILE* file ,char Array[256][256], int &charsonrow)
 {
 	char temp[256];
 	int i = 0;
@@ -10,38 +10,51 @@ int CustomGetLine(FILE* file ,char Array[256][256])
 		for (int j=0;temp[j] != '\0'; j++)
 		{	
 				if(temp[j] == '\n') {
-					temp[j] = '\0';
-					
+					break;
 				}
 				Array[i][j]=temp[j];
+				charsonrow = j;
 		}
 	}
 	return i;
 }
-// int CharsOnRow(FILE* file, char Array[256][256])
-// {
-// 	int charsonrow = 0;
-// 	char temp[256];
-// 	fgets(temp, 256, file);
-// 		for (int j=0;temp[j] != '\0'; j++)
-// 		{	
-// 				charsonrow++;
-// 		}
-// 		return charsonrow;
-// }
-//}
-void PlayerVision(int &x, int &y, char Array[256][256],int player)
+
+void PlayerVision(int &x, int &y, char Array[256][256],int rows, int charsonrow)
 {
+	
 	for(int i = -2; i < 3; i ++)
 	{
 		for (int j = -2; j < 3; j++)
 		{
-			printf("%c",Array[y+i][x+j]);
-			
+			const int mapY = y+i;
+			const int mapX = x+j;
+			if(mapY < 1 || mapY > rows-2)
+			{
+				Array[y+i][x+j] = ' ';
+				printf("%c",Array[y+i][x+j]);
+			}else if(mapX < 0 || mapX > charsonrow)
+			{
+				Array[y+i][x+j] = ' ';
+				printf("%c",Array[y+i][x+j]);
+			}else
+			{
+				printf("%c",Array[mapY][mapX]);
+			}
 		}
 		printf("\n\r");
 	}
 }
+// void PrintMap(char a[256][256], int rows, int charsonrow)
+// {
+// 	for(int i = 0; i < rows-1; i++)
+// 	{
+// 		for(int j = 0;j < charsonrow+1;j++)
+// 		{
+// 			printf("%c", a[i][j]);
+// 		}
+// 		printf("\n\r");
+// 	}
+// }
 int main(){
 
 	FILE * file;
@@ -55,12 +68,19 @@ int main(){
 	char Array[256][256];
 	
 	const char player = '@';
-	int y = 1;
-	int x = 1;
+	int y;
+	int x;
 	char movechar;
-	// int charsonrow = CharsOnRow(file,Array);
-	int rows = CustomGetLine(file,Array);
+	int charsonrow;
+	int rows = CustomGetLine(file,Array,charsonrow);
+	sscanf(Array[0], "%d %d", &x, &y);
+	if(Array[x][y] == '#')
+	{
+		printf("Invalid spawn point");
+		return 0;
+	}
 	do{
+		
 		system ("/bin/stty raw");
 		movechar = getchar();
 		switch (movechar)
@@ -96,8 +116,8 @@ int main(){
 		}
 		system("clear");
 		Array[y][x] = player;
-		PlayerVision(x,y,Array,player);
-		//PrintMap(Array,rows);
+		PlayerVision(x,y,Array,rows,charsonrow);
+		//PrintMap(Array,rows,charsonrow);
 		Array[y][x] = ' ';
 		
 	}while( movechar != 'q' && movechar != 'Q');

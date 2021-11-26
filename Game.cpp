@@ -1,5 +1,23 @@
 #include <iostream>
 #include <stdio.h>
+#include <math.h>
+// bool CheckIfVisible(int x1, int y1, int x2, int y2, char Array[256][256])
+// {
+// 	float m =(y2 - y1)/float(x2 - x1);
+// 	float newerror = 0;
+// 	for (int x = x1, y = y1; x <= x2; x++)
+// 	{
+// 		cout << "(" << x << "," << y << ")\n";
+// 		newerror += m;
+
+// 		if (newerror > 0.5)
+// 		{
+// 			y++;
+// 			newerror -= 1;
+// 		}
+		
+// 	}
+// }
 int CustomGetLine(FILE* file ,char Array[256][256], int &charsonrow)
 {
 	char temp[256];
@@ -18,43 +36,35 @@ int CustomGetLine(FILE* file ,char Array[256][256], int &charsonrow)
 	}
 	return i;
 }
-
-void PlayerVision(int &x, int &y, char Array[256][256],int rows, int charsonrow)
+int calculatevision(int x, int y)
 {
-	
-	for(int i = -2; i < 3; i ++)
+	return pow((x-y),2);
+}
+void ChangeVision(char Array[256][256], int &x, int &y, int &radius)
+{
+	if(Array[y][x] == 'L')
 	{
-		for (int j = -2; j < 3; j++)
+		radius++;
+	}else if(Array[y][x] == 'l')
+	{
+		radius--;
+	}
+}
+void PrintMap(char Array[256][256], int rows, int charsonrow,int &x, int &y, int &radius)
+{
+	for(int i = 0;i < rows+1; i++)
+	{
+		for(int j = 0;j < charsonrow+1;j++)
 		{
-			const int mapY = y+i;
-			const int mapX = x+j;
-			if(mapY < 1 || mapY > rows-2)
-			{
-				Array[y+i][x+j] = ' ';
-				printf("%c",Array[y+i][x+j]);
-			}else if(mapX < 0 || mapX > charsonrow)
-			{
-				Array[y+i][x+j] = ' ';
-				printf("%c",Array[y+i][x+j]);
-			}else
-			{
-				printf("%c",Array[mapY][mapX]);
+			if(calculatevision(y,i) + calculatevision(x,j) > radius*radius){
+				printf(" ");
+			}else{
+				printf("%c",Array[i][j]);
 			}
 		}
 		printf("\n\r");
-	}
+	} 
 }
-// void PrintMap(char a[256][256], int rows, int charsonrow)
-// {
-// 	for(int i = 0; i < rows-1; i++)
-// 	{
-// 		for(int j = 0;j < charsonrow+1;j++)
-// 		{
-// 			printf("%c", a[i][j]);
-// 		}
-// 		printf("\n\r");
-// 	}
-// }
 int main(){
 
 	FILE * file;
@@ -70,6 +80,7 @@ int main(){
 	const char player = '@';
 	int y;
 	int x;
+	int radius = 3;
 	char movechar;
 	int charsonrow;
 	int rows = CustomGetLine(file,Array,charsonrow);
@@ -90,6 +101,7 @@ int main(){
 			if(Array[y-1][x] != '#')
 			{
 				y--;
+				ChangeVision(Array,x,y,radius);
 			}
 			break;
 		case 'S':
@@ -97,6 +109,7 @@ int main(){
 			if(Array[y+1][x] != '#')
 			{
 				y++;
+				ChangeVision(Array,x,y,radius);
 			}
 			break;
 		case 'A':
@@ -104,6 +117,7 @@ int main(){
 			if(Array[y][x-1] != '#')
 			{
 				x--;
+				ChangeVision(Array,x,y,radius);
 			}
 			break;
 		case 'D':
@@ -111,13 +125,13 @@ int main(){
 			if(Array[y][x+1] != '#')
 			{
 				x++;
+				ChangeVision(Array,x,y,radius);
 			}
 			break;
 		}
 		system("clear");
 		Array[y][x] = player;
-		PlayerVision(x,y,Array,rows,charsonrow);
-		//PrintMap(Array,rows,charsonrow);
+		PrintMap(Array,rows,charsonrow,x,y,radius);
 		Array[y][x] = ' ';
 		
 	}while( movechar != 'q' && movechar != 'Q');

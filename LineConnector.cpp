@@ -11,11 +11,16 @@ using namespace std;
 		float newerror = 0;
 		for (int x = x1, y = y1; x >= xfinal; x--)
 		{
-			cout << "(" << x << "," << y << ")\n";
 			Array[x][y] = '#';
 			newerror += m;
+			cout << "(" << x << "," << y << newerror << ")\n";
 
 			if (newerror > 0.5)
+			{
+				y--;
+				newerror -= 1;
+			}
+			if (newerror < -0.5)
 			{
 				y++;
 				newerror -= 1;

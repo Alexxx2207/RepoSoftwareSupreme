@@ -6,4 +6,4 @@
 # add_executable(DayCalc DayCalculator.cpp)
 # add_executable(ASCII_Art ASCIIart.cpp)
 add_executable(Game Game.cpp)
-add_executable(Lines LineConnector.cpp)
+add_executable(Lines Radar.cpp)

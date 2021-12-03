@@ -7,69 +7,89 @@ using namespace std;
 		int y1 = radius;
 		int yfinal = yFinish;
 		int xfinal = xFinish;
-		float m =(yfinal - (y1+1))/float(xfinal - (x1+1));
+		float UpDown =float(yfinal - (y1))/(xfinal - (x1));
+		float LeftRight = float(xfinal - (x1))/(yfinal - (y1));
 		float newerror = 0;
-		if(xfinal < 3){
+		if(xfinal < x1 && yfinal < size - 1 && yfinal > 0){
 		for (int x = x1, y = y1; x >= xfinal; x--)
 		{
 			Array[x][y] = '#';
 			cout << "(" << x << "," << y <<","<< newerror << ")\n";
-			newerror += m;
-			while (true) {
-				if (newerror > 0.5)
-				{
-					y--;
-					newerror -= 1;
-				}
-				if (newerror < -0.5)
-				{
-					y++;
-					newerror += 1;
-				}
-				if (abs(newerror) > 0.5f){
-					Array[x][y] = '#';
-					cout << "(" << x << "," << y <<","<< newerror << ")\n";
-				} else {
-					break;
-				}
-			}
-		}
-		} else{ 
-		for (int x = x1, y = y1; y >= yfinal; y--)
-		{
-			Array[x][y] = '#';
-			cout << "(" << x << "," << y <<","<< newerror << ")\n";
-			newerror += m;
+			newerror += UpDown;
+			
 			if (newerror > 0.5)
 			{
-				x--;
+				y--;
 				newerror -= 1;
 			}
 			if (newerror < -0.5)
 			{
-				x++;
+				y++;
 				newerror += 1;
 			}
 			
 		}
-	// } else for (int x = x1, y = y1; y <= yfinal; y++)
-	// 	{
-	// 		Array[x][y] = '#';
-	// 		newerror += m;
-	// 		if (newerror > 0.5)
-	// 		{
-	// 			x--;
-	// 			newerror -= 1;
-	// 		}
-	// 		if (newerror < -0.5)
-	// 		{
-	// 			x++;
-	// 			newerror += 1;
-	// 		}
-			
-	// 		cout << "(" << x << "," << y <<","<< newerror << ")\n";
-	// 	}
-	 }
+		} else if (xfinal > x1 && yfinal < size - 1 && yfinal > 0)
+		{
+			for (int x = x1, y = y1; x <= xfinal; x++)
+			{
+				Array[x][y] = '#';
+				cout << "(" << x << "," << y <<","<< newerror << ")\n";
+				newerror += UpDown;
+				
+				if (newerror > 0.5)
+				{
+					y++;
+					newerror -= 1;
+				}
+				if (newerror < -0.5)
+				{
+					y--;
+					newerror += 1;
+				}
+				
+			}	
+		} else if(yfinal < y1)
+		{
+			for (int x = x1, y = y1; y >= yfinal; y--)
+			{
+				Array[x][y] = '#';
+				cout << "(" << x << "," << y <<","<< newerror << ")\n";
+				newerror += LeftRight;
+				
+				if (newerror > 0.5)
+				{
+					x--;
+					newerror -= 1;
+				}
+				if (newerror < -0.5)
+				{
+					x++;
+					newerror += 1;
+				}
+				
+			}
+		}else if(yfinal > y1)
+		{
+			for (int x = x1, y = y1; y <= yfinal; y++)
+			{
+				Array[x][y] = '#';
+				cout << "(" << x << "," << y <<","<< newerror << ")\n";
+				newerror += LeftRight;
+				
+				if (newerror > 0.5)
+				{
+					x++;
+					newerror -= 1;
+				}
+				if (newerror < -0.5)
+				{
+					x--;
+					newerror += 1;
+				}
+				
+			}
+		}
 	}
 	int main()
 	{
@@ -85,7 +105,7 @@ using namespace std;
 	for(int i =0; i < size; i++){
 		for (int j = 0; j < size; j++)
 		{
-			Array[i][j] = '*';
+			Array[i][j] = '.';
 			
 		}
 		printf("\n");

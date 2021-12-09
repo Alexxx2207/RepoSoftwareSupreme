@@ -1,7 +1,8 @@
 #include <iostream>
+#include <math.h>
 using namespace std;
 	
-	void bresenham(int radius, int size, char Array[7][7], int yFinish, int xFinish)
+	void bresenham(int radius, int size, char Array[100][100], int yFinish, int xFinish)
 	{
 		int x1 = radius;
 		int y1 = radius;
@@ -91,35 +92,50 @@ using namespace std;
 			}
 		}
 	}
+	void Filler(int &radius, char Array[100][100], int &size, int &yFinish, int &xFinish)
+	{
+		for(int i =0; i < size; i++)
+		{
+			for (int j = 0; j < size; j++)
+			{
+				Array[i][j] = '.';
+			}
+			printf("\n");
+			}
+		bresenham(radius, size, Array, yFinish ,xFinish);
+		for(int i = 0;i < size; i++)
+		{
+			for(int j = 0;j < size;j++)
+			{
+				if(pow((radius-i),2)+ pow((radius-j),2)> radius*radius){
+					printf("X ");
+				}else{
+					printf("%c ",Array[i][j]);
+				}
+			}
+			printf("\n\r");
+		} 
+	}
+
 	int main()
 	{
-	int radius = 3;
+	int radius = 10;
 	int size = (radius*2)+1;
-	char Array[7][7];
+	char Array[100][100];
 	int xFinish = 0;
-	int yFinish = 0;
+	int yFinish = radius;
 	do{
 		scanf("%d", &xFinish);
 		scanf("%d", &yFinish);
-	
-	for(int i =0; i < size; i++){
-		for (int j = 0; j < size; j++)
-		{
-			Array[i][j] = '.';
-			
-		}
-		printf("\n");
-	}
-	bresenham(radius, size, Array, yFinish ,xFinish);
-	for(int i =0; i < size; i++){
-		for (int j = 0; j < size; j++)
-		{
-			printf("%c ", Array[i][j]);
-			
-		}
-		printf("\n");
+		Filler(radius, Array, size, yFinish,xFinish);
+		// for (; yFinish < size * 2; yFinish++)
+		// {
+		// 	if(yFinish == size - 1)
+		// 	do{
+		// 		xFinish++;
+		// 	}while(xFinish == size - 1)
+		// }
 		
-	}
-	}while(xFinish != 9);
+	}while(true);
 	return 0;
 	}

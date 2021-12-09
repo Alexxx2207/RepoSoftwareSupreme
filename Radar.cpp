@@ -18,10 +18,9 @@ using namespace std;
 		float LeftRight = float(xfinal - (x1))/(yfinal - (y1));
 		float newerror = 0;
 		if(xfinal < x1 && yfinal < size - 1 && yfinal > 0){
-		for (int x = x1, y = y1; x >= xfinal; x--)
+		for (int x = x1, y = y1;(x-x1)*(x-x1) +(y-y1)*(y-y1) < radius*radius && x >= xfinal; x--)
 		{
 			Array[x][y] = '#';
-			cout << "(" << x << "," << y <<","<< newerror << ")\n";
 			newerror += UpDown;
 			
 			if (newerror > 0.5)
@@ -38,10 +37,9 @@ using namespace std;
 		}
 		} else if (xfinal > x1 && yfinal < size - 1 && yfinal > 0)
 		{
-			for (int x = x1, y = y1; x <= xfinal; x++)
+			for (int x = x1, y = y1;(x-x1)*(x-x1) +(y-y1)*(y-y1) < radius*radius && x <= xfinal; x++)
 			{
 				Array[x][y] = '#';
-				cout << "(" << x << "," << y <<","<< newerror << ")\n";
 				newerror += UpDown;
 				
 				if (newerror > 0.5)
@@ -58,10 +56,9 @@ using namespace std;
 			}	
 		} else if(yfinal < y1)
 		{
-			for (int x = x1, y = y1; y >= yfinal; y--)
+			for (int x = x1, y = y1;(x-x1)*(x-x1) +(y-y1)*(y-y1) < radius*radius && y >= yfinal; y--)
 			{
 				Array[x][y] = '#';
-				cout << "(" << x << "," << y <<","<< newerror << ")\n";
 				newerror += LeftRight;
 				
 				if (newerror > 0.5)
@@ -78,10 +75,9 @@ using namespace std;
 			}
 		}else if(yfinal > y1)
 		{
-			for (int x = x1, y = y1; y <= yfinal; y++)
+			for (int x = x1, y = y1;(x-x1)*(x-x1) +(y-y1)*(y-y1) < radius*radius && y <= yfinal; y++)
 			{
 				Array[x][y] = '#';
-				cout << "(" << x << "," << y <<","<< newerror << ")\n";
 				newerror += LeftRight;
 				
 				if (newerror > 0.5)
@@ -135,25 +131,25 @@ using namespace std;
 			
 			Filler(radius, Array, size, yFinish,xFinish);
 			yFinish++;
-			sleep(1);
+			usleep(700000);
 		}while(yFinish != size);
 		do{
 			
 			Filler(radius, Array, size, yFinish,xFinish);
 			xFinish++;
-			sleep(1);
+			usleep(700000);
 		}while(xFinish != size);
 		do{
 			
 			Filler(radius, Array, size, yFinish,xFinish);
 			yFinish--;
-			sleep(1);
+			usleep(700000);
 		}while(yFinish != 0);
 		do{
 			
 			Filler(radius, Array, size, yFinish,xFinish);
 			xFinish--;
-			sleep(1);
+			usleep(700000);
 		}while(xFinish != 0);
 		// scanf("%d", &xFinish);
 		// scanf("%d", &yFinish);

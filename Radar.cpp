@@ -1,5 +1,11 @@
 #include <iostream>
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
 #include <math.h>
+
 using namespace std;
 	
 	void bresenham(int radius, int size, char Array[100][100], int yFinish, int xFinish)
@@ -107,7 +113,7 @@ using namespace std;
 		{
 			for(int j = 0;j < size;j++)
 			{
-				if(pow((radius-i),2)+ pow((radius-j),2)> radius*radius){
+				if(pow((radius-i),2)+ pow((radius-j),2)> (radius*radius)-1){
 					printf("X ");
 				}else{
 					printf("%c ",Array[i][j]);
@@ -125,9 +131,33 @@ using namespace std;
 	int xFinish = 0;
 	int yFinish = radius;
 	do{
-		scanf("%d", &xFinish);
-		scanf("%d", &yFinish);
-		Filler(radius, Array, size, yFinish,xFinish);
+		do{
+			
+			Filler(radius, Array, size, yFinish,xFinish);
+			yFinish++;
+			sleep(1);
+		}while(yFinish != size);
+		do{
+			
+			Filler(radius, Array, size, yFinish,xFinish);
+			xFinish++;
+			sleep(1);
+		}while(xFinish != size);
+		do{
+			
+			Filler(radius, Array, size, yFinish,xFinish);
+			yFinish--;
+			sleep(1);
+		}while(yFinish != 0);
+		do{
+			
+			Filler(radius, Array, size, yFinish,xFinish);
+			xFinish--;
+			sleep(1);
+		}while(xFinish != 0);
+		// scanf("%d", &xFinish);
+		// scanf("%d", &yFinish);
+		
 		// for (; yFinish < size * 2; yFinish++)
 		// {
 		// 	if(yFinish == size - 1)

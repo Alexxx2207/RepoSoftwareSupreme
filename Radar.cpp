@@ -8,7 +8,7 @@
 
 using namespace std;
 	
-	void bresenham(int radius, int size, char Array[100][100], int yFinish, int xFinish)
+	void bresenham(int radius, int size, char Array[100][100], int yFinish, int xFinish, int &ObjectX,int &ObjectY, bool &IsSeen)
 	{
 		int x1 = radius;
 		int y1 = radius;
@@ -33,7 +33,9 @@ using namespace std;
 				y++;
 				newerror += 1;
 			}
-			
+			if(x==ObjectX && y==ObjectY){
+					IsSeen = true;
+				}
 		}
 		} else if (xfinal > x1 && yfinal < size - 1 && yfinal > 0)
 		{
@@ -51,6 +53,9 @@ using namespace std;
 				{
 					y--;
 					newerror += 1;
+				}
+				if(x==ObjectX && y==ObjectY){
+					IsSeen = true;
 				}
 				
 			}	
@@ -71,6 +76,9 @@ using namespace std;
 					x++;
 					newerror += 1;
 				}
+				if(x==ObjectX && y==ObjectY){
+					IsSeen = true;
+				}
 				
 			}
 		}else if(yfinal > y1)
@@ -90,12 +98,15 @@ using namespace std;
 					x--;
 					newerror += 1;
 				}
-				
+				if(x==ObjectX && y==ObjectY){
+					IsSeen = true;
+				}
 			}
 		}
 	}
-	void Filler(int &radius, char Array[100][100], int &size, int &yFinish, int &xFinish)
+	void Filler(char Array[100][100], int &size)
 	{
+		
 		for(int i =0; i < size; i++)
 		{
 			for (int j = 0; j < size; j++)
@@ -104,7 +115,19 @@ using namespace std;
 			}
 			printf("\n");
 			}
-		bresenham(radius, size, Array, yFinish ,xFinish);
+		} 
+	
+	// void AddObjects(char Array[100][100],int ObjectX,int ObjectY)
+	// {
+	// 	printf("Enter the cordinates of the object");
+	// 	scanf("%d",&ObjectX);
+	// 	scanf("%d",&ObjectY);
+	// } 
+	// void SeekAndDestroy(char Array[100][100], int ObjectX, int ObjectY)
+	// {
+
+	// }
+	void PrintEverything(int radius, char Array[100][100], int size){
 		for(int i = 0;i < size; i++)
 		{
 			for(int j = 0;j < size;j++)
@@ -118,50 +141,68 @@ using namespace std;
 			printf("\n\r");
 		} 
 	}
-
 	int main()
 	{
-	int radius = 10;
+	int radius = 6;
 	int size = (radius*2)+1;
 	char Array[100][100];
 	int xFinish = 0;
 	int yFinish = radius;
-	do{
+	int ObjectX = 6;
+	int ObjectY = 4;
+	bool IsSeen = false;
+	while(true){
+		//AddObjects(Array,ObjectX,ObjectY);
 		do{
-			
-			Filler(radius, Array, size, yFinish,xFinish);
+
+			Filler(Array, size);
+			bresenham(radius, size, Array, yFinish ,xFinish,ObjectX,ObjectY,IsSeen);
+			if(true == IsSeen)
+			{
+				Array[ObjectX][ObjectY] = '$';				
+			}
+			PrintEverything(radius,Array,size);
 			yFinish++;
-			usleep(700000);
+			usleep(100000);
 		}while(yFinish != size);
 		do{
 			
-			Filler(radius, Array, size, yFinish,xFinish);
+			Filler(Array, size);
+			bresenham(radius, size, Array, yFinish ,xFinish,ObjectX,ObjectY,IsSeen);
+			if(IsSeen == true)
+			{
+				Array[ObjectX][ObjectY] = '$';				
+			}
+			PrintEverything(radius,Array,size);
 			xFinish++;
-			usleep(700000);
+			usleep(100000);
+			
 		}while(xFinish != size);
 		do{
-			
-			Filler(radius, Array, size, yFinish,xFinish);
+			Filler(Array, size);
+			bresenham(radius, size, Array, yFinish ,xFinish,ObjectX,ObjectY,IsSeen);
+			if(IsSeen == true)
+			{
+				Array[ObjectX][ObjectY] = '$';				
+			}
+			PrintEverything(radius,Array,size);
 			yFinish--;
-			usleep(700000);
+			usleep(100000);
+			
 		}while(yFinish != 0);
 		do{
-			
-			Filler(radius, Array, size, yFinish,xFinish);
+			Filler(Array, size);
+			bresenham(radius, size, Array, yFinish ,xFinish,ObjectX,ObjectY,IsSeen);
+			if(IsSeen == true)
+			{
+				Array[ObjectX][ObjectY] = '$';				
+			}
+			PrintEverything(radius,Array,size);
 			xFinish--;
-			usleep(700000);
+			usleep(100000);
+			
 		}while(xFinish != 0);
-		// scanf("%d", &xFinish);
-		// scanf("%d", &yFinish);
 		
-		// for (; yFinish < size * 2; yFinish++)
-		// {
-		// 	if(yFinish == size - 1)
-		// 	do{
-		// 		xFinish++;
-		// 	}while(xFinish == size - 1)
-		// }
-		
-	}while(true);
+	}
 	return 0;
 	}

@@ -17,9 +17,22 @@ using namespace std;
 	};
 
 	Element elem[50];
-	int NumCount = 0;
 
-	void draw(int radius, int size, char Array[100][100], int yFinish, int xFinish, bool &IsSeen, bool &ShouldDelete)
+	void shouldDraw( int AddNum,int x, int y)
+	{
+		for(int i = 0; i < AddNum; i++)
+		{
+			if(x == elem[i].x && y == elem[i].y)
+			{
+				elem[i].seen = elem[i].del == false;
+			}
+		}
+	}
+	void SecondToFirst(int yIn, int xIn, int xOut, int yOut)
+	{
+		xIn = yOut;
+	}
+	void draw(int radius, int size, char Array[100][100], int yFinish, int xFinish , bool &ShouldDelete, int &AddNum)
 	{
 		int x1 = radius;
 		int y1 = radius;
@@ -28,8 +41,9 @@ using namespace std;
 		float UpDown = float(yfinal - (y1))/(xfinal - (x1));
 		float LeftRight = float(xfinal - (x1))/(yfinal - (y1));
 		float newerror = 0;
+		int x = x1, y = y1;
 		if(xfinal < x1 && yfinal < size - 1 && yfinal > 0){
-			for (int x = x1, y = y1;(x-x1)*(x-x1) +(y-y1)*(y-y1) < radius*radius && x >= xfinal; x--)
+			for (;(x-x1)*(x-x1) +(y-y1)*(y-y1) < radius*radius && x >= xfinal; x--)
 			{
 				Array[x][y] = '#';
 				newerror += UpDown;
@@ -44,20 +58,13 @@ using namespace std;
 					y++;
 					newerror += 1;
 				}
-				for(int i = 0; i < NumCount; i++){
-					if(x==elem[i].x && y==elem[i].y){
-						if(ShouldDelete == true){
-							elem[i].seen=false;
-						}else{
-							elem[i].seen = true;
-						}
-
-					}
-				} 
+				shouldDraw(AddNum,x,y);  
 			}
 		} else if (xfinal > x1 && yfinal < size - 1 && yfinal > 0)
 		{
-			for (int x = x1, y = y1;(x-x1)*(x-x1) +(y-y1)*(y-y1) < radius*radius && x <= xfinal; x++)
+			x = x1, y = y1
+			FirstToSecond(yfinal,xfinal,x,y);
+			for (;(x-x1)*(x-x1) +(y-y1)*(y-y1) < radius*radius && x <= xfinal; x++)
 			{
 				Array[x][y] = '#';
 				newerror += UpDown;
@@ -72,15 +79,7 @@ using namespace std;
 					y--;
 					newerror += 1;
 				}
-				for(int i = 0; i < NumCount; i++){
-					if(x==elem[i].x && y==elem[i].y){
-						if(ShouldDelete == true){
-							elem[i].seen=false;
-						}else{
-							elem[i].seen = true;
-						}
-					}
-				}  
+				shouldDraw(AddNum,x,y);    
 				
 			}
 		} else if(yfinal < y1)
@@ -100,15 +99,7 @@ using namespace std;
 					x++;
 					newerror += 1;
 				}
-				for(int i = 0; i < NumCount; i++){
-					if(x==elem[i].x && y==elem[i].y){
-						if(ShouldDelete == true){
-							elem[i].seen=false;
-						}else{
-							elem[i].seen = true;
-							}
-						}
-					} 
+				shouldDraw(AddNum,x,y);     
 			}	
 		}else if(yfinal > y1)
 		{
@@ -127,16 +118,7 @@ using namespace std;
 					x--;
 					newerror += 1;
 				}
-				for(int i = 0; i < NumCount; i++){
-				if(x==elem[i].x && y==elem[i].y){
-					if(ShouldDelete == true){
-						elem[i].seen=false;
-					}else{
-						elem[i].seen = true;
-					}
-
-				}
-			}  
+			shouldDraw(AddNum,x,y);   
 			}
 		}
 	}
@@ -153,30 +135,25 @@ using namespace std;
 			}
 		} 
 	
-	void DoThatThing (char Array[100][100], int &Move, bool &ShouldDelete)
+	void DoThatThing (char Array[100][100], int &Move, bool &ShouldDelete,int &AddNum)
 	{
 		system ("/bin/stty raw");
 		printf("enter command: " "\n\r");
 		char Action = getchar();
-		int AddNum;
+		int delObj;
 		switch (Action)
 		{
 			case 'a':
-				
-				scanf("%d", &AddNum);
-				NumCount=AddNum;
-				for(int i = 0; i < AddNum;i++){
-					elem[i].num = i;
-					printf("nz");
-					scanf("%d %d", &elem[i].x, &elem[i].y);
-					ShouldDelete = false;
-				}
+				scanf("%d %d", &elem[AddNum].x, &elem[AddNum].y);
+				elem[AddNum].num = AddNum;
+				AddNum++;
 				break;
 			case 's': 
 				scanf(" %d", &Move);
 				break;
 			case 'd':
-				ShouldDelete = true;
+				scanf("%d", &delObj);
+				elem[delObj].del=true;
 				break;
 		}
 	}
@@ -201,32 +178,31 @@ using namespace std;
 	int size = (radius*2)+1;
 	char Array[100][100];
 	int xFinish = 0;
-	int yFinish = radius;
-	int ObjectX;
-	int ObjectY;
-	bool IsSeen = false;
+	int yFinish = 0;
 	bool ShouldDelete = false;
 	int Move = 0;
-	int elementnum = 0;
+	int AddNum = 0;
 	while(true){
 		do{
 			while (Move != 0 && yFinish != size)
 			{
 				Move--;
 				Filler(Array, size);
-			draw(radius, size, Array, yFinish ,xFinish,IsSeen,ShouldDelete);
-			for(int i = 0; i < NumCount;i++){
+			draw(radius, size, Array, yFinish ,xFinish,ShouldDelete,AddNum);
+			for(int i = 0; i < AddNum;i++){
 				if(true == elem[i].seen)
 				{
-					Array[elem[i].x][elem[i].y] = '$';				
+					Array[elem[i].x][elem[i].y] = '0' + elem[i].num;
+									
 				}
 			}
+			
 			PrintEverything(radius,Array,size);
 			yFinish++;
 			usleep(100000);
 			}
 			if(Move == 0){
-			DoThatThing(Array,Move,ShouldDelete);
+			DoThatThing(Array,Move,ShouldDelete,AddNum);
 		}
 
 		}while(yFinish != size);
@@ -235,11 +211,12 @@ using namespace std;
 			{
 				Move--;
 				Filler(Array, size);
-			draw(radius, size, Array, yFinish ,xFinish,IsSeen,ShouldDelete);
-			for(int i = 0; i < NumCount;i++){
+			draw(radius, size, Array, yFinish ,xFinish,ShouldDelete,AddNum);
+			for(int i = 0; i < AddNum;i++){
 				if(true == elem[i].seen)
 				{
-				Array[elem[i].x][elem[i].y] = '$';					
+				Array[elem[i].x][elem[i].y] = '0' + elem[i].num;
+										
 				}
 			}
 			PrintEverything(radius,Array,size);
@@ -247,7 +224,7 @@ using namespace std;
 			usleep(100000);
 			}
 			if(Move == 0){
-				DoThatThing(Array,Move,ShouldDelete);
+				DoThatThing(Array,Move,ShouldDelete,AddNum);
 			}
 		}while(xFinish != size);
 		do{
@@ -255,19 +232,21 @@ using namespace std;
 			{
 				Move--;
 				Filler(Array, size);
-			draw(radius, size, Array, yFinish ,xFinish,IsSeen,ShouldDelete);
-			for(int i = 0; i < NumCount;i++){
+			draw(radius, size, Array, yFinish ,xFinish,ShouldDelete,AddNum);
+			for(int i = 0; i < AddNum;i++){
 				if(true == elem[i].seen)
 				{
-					Array[elem[i].x][elem[i].y] = '$';				
+					Array[elem[i].x][elem[i].y] = '0' + elem[i].num;
+										
 				}
 			}
+			
 			PrintEverything(radius,Array,size);
 			yFinish--;
 			usleep(100000);
 			}
 				if(Move == 0){
-				DoThatThing(Array,Move,ShouldDelete);
+				DoThatThing(Array,Move,ShouldDelete,AddNum);
 			}
 		}while(yFinish != 0);
 		do{
@@ -275,19 +254,21 @@ using namespace std;
 			{
 				Move--;
 				Filler(Array, size);
-			draw(radius, size, Array, yFinish ,xFinish,IsSeen,ShouldDelete);
-			for(int i = 0; i < NumCount;i++){
+			draw(radius, size, Array, yFinish ,xFinish,ShouldDelete,AddNum);
+			for(int i = 0; i < AddNum;i++){
 				if(true == elem[i].seen)
 				{
-				Array[elem[i].x][elem[i].y] = '$';				
+				Array[elem[i].x][elem[i].y] = '0' + elem[i].num;
+								
 				}
 			}
+			
 			PrintEverything(radius,Array,size);
 			xFinish--;
 			usleep(100000);
 			}
 			if(Move == 0){
-				DoThatThing(Array,Move,ShouldDelete);
+				DoThatThing(Array,Move,ShouldDelete,AddNum);
 			}
 		}while(xFinish != 0);
 	}
